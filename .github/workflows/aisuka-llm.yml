@@ -1,0 +1,42 @@
+# Builds aisuka-pod:<lock> (docker/llm): aisuka-pod:latest with one model's
+# weights baked in, from docker/llm/locks/<lock>.json.
+#
+#   ghcr.io/<owner>/aisuka-pod:<lock>
+#   ghcr.io/<owner>/aisuka-pod:<lock>-<date>-<sha>
+#
+# Run it by hand, once per model, after aisuka-pod. To add a model: run
+# `python3 docker/llm/models.py lock <hf repo> <tag>` and commit the lock,
+# then add it to BAKED_MODELS in companion/launch.py of the aisuka repo.
+name: aisuka-llm
+on:
+  workflow_dispatch:
+    inputs:
+      lock:
+        description: "model (a file in docker/llm/locks, without .json)"
+        type: choice
+        options: [qwen3-vl-8b, qwen2.5-7b]
+        default: qwen3-vl-8b
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions: {contents: read, packages: write}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Disk space
+        run: .github/workflows/_disk.sh
+      - uses: docker/login-action@v3
+        with: {registry: ghcr.io, username: "${{ github.actor }}", password: "${{ secrets.GITHUB_TOKEN }}"}
+      - name: Build and push
+        env:
+          LOCK: ${{ inputs.lock }}
+        run: |
+          IMG=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/aisuka-pod
+          TAG=$LOCK-$(date +%Y%m%d)-${GITHUB_SHA::7}
+          ( while sleep 120; do df -h /mnt | tail -1; done ) &
+          docker build \
+            --build-arg POD_IMAGE="$IMG:latest" \
+            --build-arg LOCK="$LOCK" \
+            -t "$IMG:$LOCK" -t "$IMG:$TAG" docker/llm
+          docker push "$IMG:$LOCK"
+          docker push "$IMG:$TAG"
+          docker image inspect --format 'size {{.Size}}' "$IMG:$LOCK"

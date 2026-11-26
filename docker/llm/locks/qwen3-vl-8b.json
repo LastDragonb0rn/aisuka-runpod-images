@@ -1,0 +1,73 @@
+{
+ "repo": "Qwen/Qwen3-VL-8B-Instruct-FP8",
+ "revision": "9cdc6310a8cb770ce18efaf4e9935334512aee45",
+ "tag": "qwen3-vl-8b",
+ "files": [
+  {
+   "path": "chat_template.json",
+   "size": 5497,
+   "sha256": null,
+   "git_oid": "e70949bd29403f4dfa7170b69e04379df01ecccb"
+  },
+  {
+   "path": "config.json",
+   "size": 12005,
+   "sha256": null,
+   "git_oid": "26e6cf277c3cbeb4de1c4fa7a99c32b082456c11"
+  },
+  {
+   "path": "generation_config.json",
+   "size": 241,
+   "sha256": null,
+   "git_oid": "9ecbd389b949f8838d4ad6885f72b20148482933"
+  },
+  {
+   "path": "model-00001-of-00002.safetensors",
+   "size": 5363407552,
+   "sha256": "e2dea2e85e643ef7045c31a485a426631a1e0a84e463f8b2c7e9c6682a06eafd",
+   "git_oid": null
+  },
+  {
+   "path": "model-00002-of-00002.safetensors",
+   "size": 5226891960,
+   "sha256": "3dc64ec934af27a7007d265014e907aff9e16658d409e5cd4cf79869bf2bd8c1",
+   "git_oid": null
+  },
+  {
+   "path": "model.safetensors.index.json",
+   "size": 94475,
+   "sha256": null,
+   "git_oid": "b35a1b56c5339a995fe93523171ebe3e0e776e83"
+  },
+  {
+   "path": "preprocessor_config.json",
+   "size": 336,
+   "sha256": null,
+   "git_oid": "4ae180b49f91e11d4da327d44edd9d4a909fe908"
+  },
+  {
+   "path": "tokenizer.json",
+   "size": 10179867,
+   "sha256": null,
+   "git_oid": "79b53cf927fccfa9990d490911045e7f34cfd388"
+  },
+  {
+   "path": "tokenizer_config.json",
+   "size": 10868,
+   "sha256": null,
+   "git_oid": "d3d3763207692c78780f4bf42d4dadf49a5c8012"
+  },
+  {
+   "path": "video_preprocessor_config.json",
+   "size": 331,
+   "sha256": null,
+   "git_oid": "e7154d5e0491cdfb9ccb141a1c70c05df127f219"
+  },
+  {
+   "path": "vocab.json",
+   "size": 4957462,
+   "sha256": null,
+   "git_oid": "e9be847b451c2364e1949ecfb4b030db89410563"
+  }
+ ]
+}

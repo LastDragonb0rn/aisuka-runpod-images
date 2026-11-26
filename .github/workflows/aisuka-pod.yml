@@ -1,0 +1,43 @@
+# Builds aisuka-pod:latest (docker/pod): the voice services, vLLM and the
+# voice models, on top of aisuka-services from LastDragonb0rn/aisuka.
+#
+#   ghcr.io/<owner>/aisuka-pod:latest
+#   ghcr.io/<owner>/aisuka-pod:<date>-<sha>
+#
+# Run it by hand (Actions -> aisuka-pod -> Run workflow) after the services
+# image changes, then run aisuka-llm so the model images sit on the new one.
+# A new ghcr.io package is private: make it public once in its settings, or
+# Runpod cannot pull it.
+name: aisuka-pod
+on:
+  workflow_dispatch:
+    inputs:
+      services_image:
+        description: "base image (the aisuka voice server)"
+        default: "ghcr.io/lastdragonb0rn/aisuka-services:latest"
+      vllm_version:
+        description: "vLLM version; must match VLLM_VERSION in companion/launch.py"
+        default: "0.11.0"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions: {contents: read, packages: write}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Disk space
+        run: .github/workflows/_disk.sh
+      - uses: docker/login-action@v3
+        with: {registry: ghcr.io, username: "${{ github.actor }}", password: "${{ secrets.GITHUB_TOKEN }}"}
+      - name: Build and push
+        env:
+          SERVICES_IMAGE: ${{ inputs.services_image }}
+          VLLM_VERSION: ${{ inputs.vllm_version }}
+        run: |
+          IMG=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/aisuka-pod
+          TAG=$(date +%Y%m%d)-${GITHUB_SHA::7}
+          docker build \
+            --build-arg SERVICES_IMAGE="$SERVICES_IMAGE" \
+            --build-arg VLLM_VERSION="$VLLM_VERSION" \
+            -t "$IMG:latest" -t "$IMG:$TAG" docker/pod
+          docker push --all-tags "$IMG"
+          docker image inspect --format 'size {{.Size}}' "$IMG:latest"
