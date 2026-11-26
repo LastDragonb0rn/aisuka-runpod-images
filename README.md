@@ -6,7 +6,7 @@ the image by itself (`launch_image_repo`, `companion/launch.py`).
 
 | Image | What is inside | Size |
 |---|---|---|
-| `ghcr.io/lastdragonb0rn/aisuka-pod:latest` | the voice server (Whisper + TeraTTS + voiceprints) with its models, vLLM, gcc | ~15 GB |
+| `ghcr.io/lastdragonb0rn/aisuka-pod:latest` | the voice server (Whisper + TeraTTS + voiceprints) with its models, vLLM, gcc | 30 GB unpacked |
 | `ghcr.io/lastdragonb0rn/aisuka-pod:qwen3-vl-8b` | the above + `Qwen/Qwen3-VL-8B-Instruct-FP8` (chat and screen vision in one model) | +10 GB |
 | `ghcr.io/lastdragonb0rn/aisuka-pod:qwen2.5-7b` | the above + `Qwen/Qwen2.5-7B-Instruct` | +14 GB |
 
