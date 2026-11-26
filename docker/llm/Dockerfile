@@ -29,7 +29,7 @@ RUN /app/.venv/bin/python /opt/aisuka/models.py part 6
 RUN /app/.venv/bin/python /opt/aisuka/models.py part 7
 RUN /app/.venv/bin/python /opt/aisuka/models.py part 8
 RUN /app/.venv/bin/python /opt/aisuka/models.py part 9
-RUN /app/.venv/bin/python /opt/aisuka/models.py verify && du -sh /models/llm /opt/aisuka/parts
+RUN /app/.venv/bin/python /opt/aisuka/models.py verify && mkdir -p /opt/aisuka/parts && du -sh /models/llm /opt/aisuka/parts
 # The image's vLLM must know the model's architecture: a model it cannot
 # load fails here, not twenty minutes into a paid pod.
 RUN /opt/vllm/bin/python -c "import json; from vllm import ModelRegistry; \
