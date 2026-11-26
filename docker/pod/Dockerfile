@@ -24,7 +24,7 @@ RUN uv venv -q --python 3.13 /opt/vllm \
     && /opt/vllm/bin/python -c "import importlib.metadata as m; print('vllm', m.version('vllm'))"
 
 COPY prefetch.py /opt/aisuka/prefetch.py
-RUN cd /app && /app/.venv/bin/python /opt/aisuka/prefetch.py && du -sh "$HF_HOME"
+RUN cd /app && PYTHONPATH=/app /app/.venv/bin/python /opt/aisuka/prefetch.py && du -sh "$HF_HOME"
 
 ENV AISUKA_POD_IMAGE=1 \
     AISUKA_VLLM_VERSION=${VLLM_VERSION} \
