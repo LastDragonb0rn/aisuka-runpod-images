@@ -5,6 +5,9 @@
 # - the voice server (Whisper + TeraTTS) from the aisuka-services image;
 # - vLLM in /opt/vllm, the version the hub asks for, so the pod does not
 #   spend minutes installing it on every start;
+# - transformers held below 5: vLLM 0.11 asks for `>=4.56` with no upper
+#   bound, and 5.x dropped `all_special_tokens_extended`, which its
+#   tokenizer cache reads, so vLLM died loading any model's tokenizer;
 # - gcc, which Triton needs to compile its launchers at run time;
 # - the Whisper, TeraTTS and voiceprint weights, in HF_HOME.
 #
@@ -20,7 +23,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 RUN uv venv -q --python 3.13 /opt/vllm \
-    && uv pip install --no-cache --python /opt/vllm/bin/python "vllm==${VLLM_VERSION}" \
+    && uv pip install --no-cache --python /opt/vllm/bin/python "vllm==${VLLM_VERSION}" "transformers>=4.57,<5" \
     && /opt/vllm/bin/python -c "import importlib.metadata as m; print('vllm', m.version('vllm'))"
 
 COPY prefetch.py /opt/aisuka/prefetch.py

@@ -36,5 +36,9 @@ RUN /opt/vllm/bin/python -c "import json; from vllm import ModelRegistry; \
 arch = json.load(open('/models/llm/config.json'))['architectures'][0]; \
 assert arch in ModelRegistry.get_supported_archs(), 'vLLM does not support ' + arch; \
 print('vLLM supports', arch)"
+# And load its tokenizer the way vLLM does on start: a transformers release
+# vLLM does not work with fails here.
+RUN /opt/vllm/bin/python -c "from vllm.transformers_utils.tokenizer import get_tokenizer; \
+t = get_tokenizer('/models/llm'); print('tokenizer', type(t).__name__, len(t))"
 
 LABEL org.opencontainers.image.description="Aisuka pod: voice services, vLLM and one LLM preinstalled for Runpod"
